@@ -1,5 +1,6 @@
 package com.example.contacts2026;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class ContactActivity extends AppCompatActivity {
         TextView email = findViewById(R.id.email);
 
 
-        avatar.setImageResource(contact.getAvatar());
+        avatar.setImageURI(Uri.parse(contact.getAvatar()));
         name.setText(contact.getName());
         email.setText(contact.getEmail());
     }

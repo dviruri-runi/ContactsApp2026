@@ -2,6 +2,7 @@ package com.example.contacts2026;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +21,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> {
     public ContactAdapter() {
         super();
         contacts = new ArrayList<>();
-        contacts.add(new Contact(R.drawable.avatar1,"Contact 1","contact1@gmail.com"));
+        /*contacts.add(new Contact(R.drawable.avatar1,"Contact 1","contact1@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar2,"Contact 2","contact2@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar3,"Contact 3","contact3@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar4,"Contact 4","contact4@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar5,"Contact 5","contact5@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar6,"Contact 6","contact6@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar7,"Contact 7","contact7@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar8,"Contact 8","contact8@gmail.com"));
+        contacts.add(new Contact(R.drawable.avatar8,"Contact 8","contact8@gmail.com"));*/
     }
 
     @NonNull
@@ -41,7 +42,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         Contact contact = contacts.get(position);
-        holder.Avatar.setImageResource(contact.getAvatar());
+        holder.Avatar.setImageURI(Uri.parse(contact.getAvatar()));
         holder.Name.setText(contact.getName());
         holder.Email.setText(contact.getEmail());
         holder.Card.setOnClickListener(new View.OnClickListener() {

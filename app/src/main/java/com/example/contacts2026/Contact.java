@@ -3,17 +3,17 @@ package com.example.contacts2026;
 import java.io.Serializable;
 
 public class Contact implements Serializable {
-    private int Avatar;
+    private String Avatar;
     private String Name;
     private String Email;
 
-    public Contact(int avatar, String name, String email) {
+    public Contact(String avatar, String name, String email) {
         Avatar = avatar;
         Name = name;
         Email = email;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return Avatar;
     }
 
