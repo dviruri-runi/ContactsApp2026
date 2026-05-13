@@ -22,11 +22,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class AddContactActivity extends AppCompatActivity {
 
     private int REQUEST_PERMISSIONS_CODE = 1;
     private ActivityResultLauncher<Uri> takePictureLauncher;
     private Uri CurrentImage;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +71,11 @@ public class AddContactActivity extends AppCompatActivity {
 
                 Contact contact = new Contact(String.valueOf(CurrentImage),name.getText().toString(),email.getText().toString());
 
-                Intent intent = new Intent();
+                db.collection("contacts").document(contact.getID()).set(contact.getAsMap());
+
+                /* Intent intent = new Intent();
                 intent.putExtra("contact",contact);
-                setResult(1,intent);
+                setResult(1,intent); */
                 finish();
             }
         });

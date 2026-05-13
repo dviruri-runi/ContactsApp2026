@@ -8,8 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +27,7 @@ import java.util.List;
 public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> {
 
     List<Contact> contacts;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ContactAdapter() {
         super();
@@ -29,6 +40,31 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> {
         contacts.add(new Contact(R.drawable.avatar6,"Contact 6","contact6@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar7,"Contact 7","contact7@gmail.com"));
         contacts.add(new Contact(R.drawable.avatar8,"Contact 8","contact8@gmail.com"));*/
+
+        db.collection("contacts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    AddContactsToList(task.getResult());
+                    notifyDataSetChanged();
+                }
+            }
+        });
+        db.collection("contacts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                AddContactsToList(value);
+                notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void AddContactsToList(QuerySnapshot result) {
+        contacts.clear();
+        for (QueryDocumentSnapshot doc : result ) {
+            Contact c = new Contact(doc.get("Avatar").toString(),doc.get("Name").toString(),doc.get("Email").toString(),doc.get("ID").toString());
+            contacts.add(c);
+        }
     }
 
     @NonNull
@@ -42,7 +78,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         Contact contact = contacts.get(position);
-        holder.Avatar.setImageURI(Uri.parse(contact.getAvatar()));
+        //holder.Avatar.setImageURI(Uri.parse(contact.getAvatar()));
+        Glide.with(holder.Avatar).load(contact.getAvatar()).into(holder.Avatar);
         holder.Name.setText(contact.getName());
         holder.Email.setText(contact.getEmail());
         holder.Card.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +108,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> {
     }
 
     public void DeleteContact(int pos) {
+        Contact c = contacts.get(pos);
+        db.collection("contacts").document(c.getID()).delete();
+        /*
         contacts.remove(pos);
         notifyDataSetChanged();
+         */
     }
 }

@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //throw new RuntimeException("Test Crash");
                 Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
-                activityResultLauncher.launch(intent);
+                //activityResultLauncher.launch(intent);
+                startActivity(intent);
             }
         });
 

@@ -11,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
+
 public class ContactActivity extends AppCompatActivity {
 
     @Override
@@ -32,7 +34,8 @@ public class ContactActivity extends AppCompatActivity {
         TextView email = findViewById(R.id.email);
 
 
-        avatar.setImageURI(Uri.parse(contact.getAvatar()));
+        //avatar.setImageURI(Uri.parse(contact.getAvatar()));
+        Glide.with(this).load(contact.getAvatar()).into(avatar);
         name.setText(contact.getName());
         email.setText(contact.getEmail());
     }
